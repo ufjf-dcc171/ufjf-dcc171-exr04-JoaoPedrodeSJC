@@ -17,22 +17,56 @@ public class Exercicio4b extends JFrame{
     private final JTextField entrada1;
     private final JButton botao;
     private JPasswordField frase = new JPasswordField("abacate");
+    int chance = 5;
     public Exercicio4b() throws HeadlessException
     {
         super("Forca");
+        String palavra = "?";
+        for (int i = 1; i < frase.getText().length(); i++) {
+            palavra = palavra + '?';
+        }
         setLayout(new FlowLayout());
-        saida1 = new JLabel("");
+        saida1 = new JLabel(palavra);
         entrada1 = new JTextField(15);
         botao = new JButton("enviar");
         add(entrada1);
         add(botao);
         add(saida1);
+        botao.addActionListener(new teste());
     }
 
-    private class operacao implements ActionListener {
+    private class teste implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
-            
+            if(chance >0)
+            {
+                char letra = entrada1.getText().toCharArray()[0];
+                String password = "";
+                boolean errou = true;
+                for (int i = 0; i < frase.getPassword().length; i++) {
+
+                    if(frase.getPassword()[i] == letra)
+                    {
+                        password = password + letra;
+                        errou = false;
+                    }
+                    else
+                    {
+                        password = password + saida1.getText().toCharArray()[i];
+                    }
+
+                }
+                if(errou)
+                {
+                    chance--;
+                }
+                saida1.setText(password);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,"Você não possui mais chances","Game Over",JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 }
+
